@@ -21,12 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # - name: Upload node_modules
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: node_modules
-      #     path: node_modules
-
   react-test:
     name: Run ESLint Tests
     runs-on: ubuntu-latest
@@ -39,11 +33,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.9.0'
-
-      - name: Restore node_modules
-        uses: actions/download-artifact@v3
-        with:
-          name: node_modules
 
       - name: Run ESLint
         run: npx eslint './src/**/*.{js,jsx}'
@@ -61,11 +50,6 @@ jobs:
         with:
           node-version: '20.9.0'
 
-      - name: Restore node_modules
-        uses: actions/download-artifact@v3
-        with:
-          name: node_modules
-
       - name: Build project
         run: npm run build
 
@@ -73,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: dist
+          path: build
 
   docker-build:
     name: Docker Build and Push
@@ -94,7 +78,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
-      # - name: Build and Push Docker Image
-      #   run: |
-      #     docker build -t ${{ secrets.DOCKER_IMAGE_NAME }} .
-      #     docker push ${{ secrets.DOCKER_IMAGE_NAME }}
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_IMAGE_NAME }} .
+          docker push ${{ secrets.DOCKER_IMAGE_NAME }}
