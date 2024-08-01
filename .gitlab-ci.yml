@@ -1,8 +1,8 @@
 stages:
   - react-install
-  - react-test
-  - react-build
-  - docker-build
+  # - react-test
+  # - react-build
+  # - docker-build
 
 
 react-install: 
@@ -19,44 +19,44 @@ react-install:
     paths:
       - node_modules
 
-react-test:
-  stage: react-test
-  only: 
-    - main
-  image: node:20.9.0
-  script:
-    - echo "Start run test eslint..."
-    - npx eslint './src/**/*.{js,jsx}'
-    - echo "test successfully"
-  artifacts:
-    expires_in: 1 hours
-    paths:
-      - coverage
+# react-test:
+#   stage: react-test
+#   only: 
+#     - main
+#   image: node:20.9.0
+#   script:
+#     - echo "Start run test eslint..."
+#     - npx eslint './src/**/*.{js,jsx}'
+#     - echo "test successfully"
+#   artifacts:
+#     expires_in: 1 hours
+#     paths:
+#       - coverage
 
-react-build:
-  stage: react-build
-  only: 
-    - main
-  image: node:20.9.0
-  script:
-    - echo "Start build..."
-    - npm run build
-    - echo "build successfully"
-  artifacts:
-    expires_in: 1 hours
-    paths:
-      - dist
+# react-build:
+#   stage: react-build
+#   only: 
+#     - main
+#   image: node:20.9.0
+#   script:
+#     - echo "Start build..."
+#     - npm run build
+#     - echo "build successfully"
+#   artifacts:
+#     expires_in: 1 hours
+#     paths:
+#       - dist
 
-docker-build:
-  stage: docker-build
-  only: 
-    - main
-  image: docker:latest
-  services:
-    - name: docker:24.0.5-dind
-  dependencies:
-    - react-build
-  script:
-    - echo $CI_REGISTRY_PASSWORD | docker login -u "$CI_REGISTRY_USER" $CI_REGISTRY --password-stdin
-    - docker build -t $CI_REGISTRY_IMAGE .
-    - docker push $CI_REGISTRY_IMAGE
+# docker-build:
+#   stage: docker-build
+#   only: 
+#     - main
+#   image: docker:latest
+#   services:
+#     - name: docker:24.0.5-dind
+#   dependencies:
+#     - react-build
+#   script:
+#     - echo $CI_REGISTRY_PASSWORD | docker login -u "$CI_REGISTRY_USER" $CI_REGISTRY --password-stdin
+#     - docker build -t $CI_REGISTRY_IMAGE .
+#     - docker push $CI_REGISTRY_IMAGE
