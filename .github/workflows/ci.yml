@@ -31,5 +31,5 @@ jobs:
         with:
           context: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/project_todolist:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/project_todolist:latest
 
