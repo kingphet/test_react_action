@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.9.0'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
@@ -34,8 +35,8 @@ jobs:
         with:
           node-version: '20.9.0'
 
-      # - name: Run ESLint
-      #   run: npx eslint './src/**/*.{js,jsx}'
+      - name: Run ESLint
+        run: npx eslint './src/**/*.{js,jsx}'
 
   react-build:
     name: Build React App
@@ -53,12 +54,6 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # - name: Upload build artifacts
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: build
-      #     path: build
-
   docker-build:
     name: Docker Build and Push
     runs-on: ubuntu-latest
@@ -67,16 +62,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Restore build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-
       - name: Log in to Docker Hub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build and Push Docker Image
         run: |
