@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v3
         continue-on-error: true
         with:
-          context: ./Dockerfile
+          context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/project_todolist:latest
 
