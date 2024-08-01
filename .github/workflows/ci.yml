@@ -35,7 +35,7 @@ jobs:
           node-version: '20.9.0'
 
       - name: Run ESLint
-        run: npx eslint '../../src/**/*.{js,jsx}'
+        run: npx eslint './src/**/*.{js,jsx}'
 
   react-build:
     name: Build React App
